@@ -7,7 +7,7 @@
 <script>
 export default {
     mounted: function() {
-        console.log(this.$store.state.user.name);
+        // console.log(this.$store.state.user);
     }
 }
 </script>

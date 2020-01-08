@@ -2,6 +2,8 @@ import Vue from "vue";
 import Router from "vue-router";
 import Antd from 'ant-design-vue';
 import App from "./components/App.vue";
+import Login from "./components/Login.vue";
+import Dashboard from "./components/dashboard";
 import store from "./store";
 import 'ant-design-vue/dist/antd.css';
 
@@ -12,23 +14,23 @@ const router = new Router({
     routes: [
         {
             path: '/',
-            component: {template:  `
-            <p>
-            <router-link :to="{ name: 'home' }">Home</router-link> |
-            <router-link :to="{ name: 'hello' }">Hello World</router-link>
-            </p>
-            `},
-            name: 'home'
+            component: Dashboard,
+            name: 'dashboard',
+            beforeEnter: (to, from, next) => {
+                const token = localStorage.getItem("token");
+                if(!token) next('/login');
+                else next();
+            }
         },
         {
-            path: '/hello',
-            component: {template:  `
-            <p>
-            <router-link :to="{ name: 'home' }">Hello</router-link> |
-            <router-link :to="{ name: 'hello' }">Hello World</router-link>
-            </p>
-            `},
-            name: 'hello'
+            path: '/login',
+            component: Login,
+            name: 'login',
+            beforeEnter:(to, from, next) => {
+                const token = localStorage.getItem("token");
+                if(token) next('/');
+                else next();
+            }
         }
     ],
     mode: 'history'
