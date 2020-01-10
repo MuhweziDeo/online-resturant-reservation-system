@@ -19,4 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'API', 'prefix' => 'v1'], function() {
     Route::post('login', 'AuthController@login');
+    Route::resource('user', 'UserController');
 });
