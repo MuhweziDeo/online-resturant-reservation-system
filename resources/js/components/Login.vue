@@ -45,13 +45,10 @@
         Forgot password
       </a>
       Or
-      <a href="">
-        Register now!
-      </a>
+       <router-link to="/signup">Resgiter</router-link>
     </a-form-item>
   </a-form>
     </div>
-
   </div>
 </template>
 

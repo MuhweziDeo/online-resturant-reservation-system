@@ -4,6 +4,7 @@ import Antd from 'ant-design-vue';
 import App from "./components/App.vue";
 import Login from "./components/Login.vue";
 import Dashboard from "./components/dashboard";
+import SignUp from "./components/SignUp.vue";
 import store from "./store";
 import 'ant-design-vue/dist/antd.css';
 
@@ -31,6 +32,11 @@ const router = new Router({
                 if(token) next('/');
                 else next();
             }
+        },
+        {
+            path: '/signup',
+            component: SignUp,
+            name: 'sign-up'
         }
     ],
     mode: 'history'
