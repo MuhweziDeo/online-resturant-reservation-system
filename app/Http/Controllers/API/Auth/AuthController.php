@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\User;
+use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -18,7 +18,5 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
         return response()->json(['token' => $token, 'message' => 'Successfully Logged in', 'data' => $user]);
     }
-
-
 
 }

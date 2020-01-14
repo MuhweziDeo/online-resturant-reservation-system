@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\{UserCreateRequest, UserUpdateRequest};
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use App\User;
+use App\Http\API\User\UserRepository;
+use App\Models\User as UserModel;
 
 class UserController extends Controller
 {
-    public function __construct() {
+
+    public function __construct(UserRepository $userRepository) {
         $this->middleware('is_auth')->only('update');
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -21,7 +24,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10);
+        $users = $this->userRepository->findAll();
         return response()->json(['data' => $users]);
     }
 
@@ -36,7 +39,7 @@ class UserController extends Controller
     {
         $data = $request->only('email', 'username', 'password');
         $data['password'] = Hash::make($request->password);
-        $user = User::create($data);
+        $user = UserModel::create($data);
         $token = auth('api')->login($user);
         return response()->json(['token' => $token, 'user' => $user, 'message' => 'Account Created Successfully'], 201);
     }
@@ -49,7 +52,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = $this->userRepository->findById($id);
         return response()->json(['data' => $user]);
     }
 
@@ -74,7 +77,7 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, $id)
     {
 
-        $user = User::findOrFail($id);
+        $user = $this->userRepository->findById($id);
         if(!$this->isOwner($id)) {
             return response()->json([
                 'message' => 'Permission Denied',
